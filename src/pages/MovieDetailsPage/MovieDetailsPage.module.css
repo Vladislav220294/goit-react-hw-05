@@ -1,0 +1,65 @@
+
+
+.container {
+    display: flex;
+   
+    gap: 20px;
+}
+
+
+
+
+
+.movieInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 500px;
+}
+
+.detailsTitle {
+        font-size: 24px;
+    font-weight: bold;
+    
+    
+    color: black;
+}
+
+.movieListImg {
+    height: auto;
+    max-width: 300px;
+    
+}
+
+.itemTitle,
+.overview,
+.genre {
+   
+    font-size: 16px;
+    
+    color: black;
+}
+
+
+
+
+.block h3 {
+    
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+}
+
+
+
+.listLink {
+    text-decoration: underline;
+    color: blue;
+    font-weight: bold;
+    
+}
+
+.listLink:hover {
+    color: rgb(74, 5, 186);
+    text-decoration: none;
+}
