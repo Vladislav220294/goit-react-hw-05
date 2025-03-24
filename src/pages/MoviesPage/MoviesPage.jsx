@@ -7,38 +7,37 @@ import css from './MoviesPage.module.css'
 import { useSearchParams } from "react-router";
 
 
+
 export default function MoviesPage() {
     const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
-    // const [input, setInput] = useState('');
-     const [query, setQuery] = useState("");
+    const [input, setInput] = useState('');
+        const [searchParams, setSearchParams] = useSearchParams();
+    const query = searchParams.get("query") ?? "";
 
-//     const handleChange = (event) => {
-//         setInput(event.target.value)
+    
+
+    const handleSubmit = (event) => {
         
-//     }
-    
-// const onSubmit = (newQuery) => {
-//     setQuery(newQuery);
-    
-//     setMovies([]);
-    
-//   }
-
-//     const handleSubmit = (event) => {
-//         event.preventDefault();
-//         if (!input.trim()) {
-//       alert("Please enter name");
-//       return;
-//     }
-//         onSubmit(input);
-//         setInput('')
         
-       
+    event.preventDefault();
+        if (input.trim()==='') {
+      alert("Please enter name");
+      return;
+    }
+        
+        
 
-    //     }
-    const [searchParams, setSearchParams]=useSearchParams()
+
+        const nextParams = new URLSearchParams(searchParams);
+        if (input !== '') {
+            nextParams.set('query', input);
+        }
+        else {nextParams.delete('query')}
+        setSearchParams(nextParams);
+        setInput('');
+    }
 
     useEffect(() => {
     
@@ -47,9 +46,12 @@ export default function MoviesPage() {
             
         setIsLoading(true);
         setError(false);
-          const data = await fetchMoviesByQuery(query);
-          
-        setMovies(data);
+            const data = await fetchMoviesByQuery(query);
+            
+            
+            setMovies(data);
+            
+            
       } catch {
         setError(true);
       } finally {
@@ -62,19 +64,19 @@ export default function MoviesPage() {
 
     return (
         <div>
-           {/* <form onSubmit={handleSubmit}>
+           
+            <form onSubmit={handleSubmit}>
                 <input
        value={input}
-          onChange={handleChange}             
+          onChange={(event)=>setInput(event.target.value)}             
       type="text"
-     
+      
     />
     <button type="submit">Search</button>
-            </form>  */}
-            <input type="text"/>
+  </form>
             {isLoading && <Loader />}
       {error && <b>error</b>}
-      {movies.length > 0 && <MovieList movies={movies} />}
+      {movies.length > 0 && <MovieList movies={movies} /> }
         </div>
     )
 }

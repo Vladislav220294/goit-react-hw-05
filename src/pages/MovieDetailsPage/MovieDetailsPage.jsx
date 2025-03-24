@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import { Outlet, useParams } from "react-router";
+import { Suspense } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Link, Outlet, useLocation, useParams } from "react-router";
 import { fetchMoviesById } from "../../Fetch";
 import css from './MovieDetailsPage.module.css'
 import { NavLink } from "react-router";
@@ -10,7 +11,9 @@ export default function MovieDetailsPage() {
     const {movieId} = useParams();
     const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-    const [movie, setMovie] = useState({});
+  const [movie, setMovie] = useState({});
+  const location = useLocation();
+  const backLinkHref = useRef(location.state)
     
     useEffect(() => {
         async function getMovie() {
@@ -33,7 +36,8 @@ export default function MovieDetailsPage() {
     }, [movieId]); 
     if (!movie) return <p>Movies not available</p>;
     return (
-        <div>
+      <div>
+        <Link to={backLinkHref.current}>Go Back</Link>
             {isLoading && <Loader />}
       {error && <b>there was an error</b>}
             <div className={css.container}>
@@ -79,7 +83,8 @@ export default function MovieDetailsPage() {
         </NavLink>
       </li>
                 </ul>
-                <Outlet/>
+               <Suspense fallback={<p>loading</p>}>
+          <Outlet /></Suspense>
   </div>
         </div>
     )
